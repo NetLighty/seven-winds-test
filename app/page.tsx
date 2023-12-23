@@ -1,9 +1,11 @@
-import styles from './page.module.css'
+//mport styles from './page.module.css'
+
+import Main from "./main/page";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      
+    <main>
+      <Main />
     </main>
   )
 }
