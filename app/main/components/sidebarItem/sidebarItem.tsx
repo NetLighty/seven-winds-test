@@ -5,9 +5,13 @@ type sidebarItemProps = {
   title: string;
 };
 
-const SidebarItem: React.FC<sidebarItemProps> = ({title}) => {
+const SidebarItem: React.FC<sidebarItemProps> = ({ title }) => {
   return (
-    <div className={styles["sidebar-item"]}>
+    <div
+      className={
+        title === "СМР" ? styles["sidebar-item_active"] : styles["sidebar-item"]
+      }
+    >
       <Image src="/blocks.svg" width={22} height={22} alt="blocks-icon" />
       <span className={styles["sidebar-item__title"]}>{title}</span>
     </div>

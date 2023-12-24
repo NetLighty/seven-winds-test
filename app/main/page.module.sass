@@ -1,6 +1,7 @@
-$dark-primary: #27272A
-$text-primary: #FFF
-$text-secondary: #A1A1AA
+$color-primary: #27272A
+$color-light: #A1A1AA
+$color-dark: #202124
+$white: #FFF
 
 $border-color: #414144
 $border-width: 1px
@@ -22,7 +23,7 @@ $font-size-sm: 10px
   display: flex
   width: 1920px
   height: 44px
-  background: $dark-primary
+  background: $color-primary
   flex-direction: row
   align-items: center
   padding: 0 20px 0 20px
@@ -30,13 +31,13 @@ $font-size-sm: 10px
   .item
     margin-right: 20px
     padding: 0 4px 0 4px
-    color: $text-secondary
+    color: $color-light
 
   .item_active
     @extend .item
     line-height: 43px
-    color: $text-primary
-    border-bottom: 2px solid $text-primary
+    color: $white
+    border-bottom: 2px solid $white
 
 .share-icon
   margin-right: 27px
@@ -46,13 +47,17 @@ $font-size-sm: 10px
 
 .arrow-icon
 
+.main-container
+  display: flex
+  flex-direction: row
 
 .side-bar
   min-height: 992px
-  background: $dark-primary
-  width: 234px
+  background: $color-primary
+  min-width: 234px
 
   &__filter
+    box-sizing: border-box
     display: flex
     flex-direction: row
     justify-content: space-between
@@ -69,8 +74,24 @@ $font-size-sm: 10px
 
     .filter__title
       @extend .text_medium
-      color: $text-secondary
+      color: $color-light
 
     .filter__subtitle
       @extend  .text_small
-      color: $text-secondary
+      color: $color-light
+
+.entity-header
+  width: 1686px
+  height: 44px
+  background: $color-primary
+  border-top: $border-width solid $border-color
+  border-bottom: $border-width solid $border-color
+  &__title
+    @extend .text_large
+    box-sizing: border-box
+    display: flex
+    height: 44px
+    border-right: $border-width solid $border-color
+    color: $white
+    padding: 0 15px 0 15px
+    align-items: center
