@@ -1,0 +1,22 @@
+@import '../../../globals'
+
+.project
+  display: flex
+  flex-direction: column
+
+.project-header
+  width: 1686px
+  box-sizing: border-box
+  height: 44px
+  background: $color-primary
+  border-top: $border-width solid $border-color
+  border-bottom: $border-width solid $border-color
+
+  &__title
+    @extend .text_large
+    display: flex
+    height: 44px
+    border-right: $border-width solid $border-color
+    color: $white
+    padding: 0 15px 0 15px
+    align-items: center

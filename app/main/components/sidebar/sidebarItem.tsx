@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./sidebarItem.module.sass";
+import styles from "./sidebar.module.sass";
 
 type sidebarItemProps = {
   title: string;
