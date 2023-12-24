@@ -1,4 +1,4 @@
-const sidebarItems = [
+export const sidebarItems = [
     "По проекту",
     "Объекты",
     "РД",
@@ -13,5 +13,5 @@ const sidebarItems = [
     "Панорамы",
     "Камеры",
     "Поручения",
-    "Контроагенты",
+    "Контрагенты",
 ]
