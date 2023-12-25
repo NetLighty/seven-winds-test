@@ -1,18 +1,96 @@
 @import '../../../../globals'
 
 .table
-  width: 1686px
+  box-sizing: border-box
+  width: 1726px
   min-height: 1080px
   background: $color-dark
-  padding-left: 10px
+  padding-left: 9px
   padding-right: 10px
 
+.borderCollapse
+  border-collapse: collapse
+
 .head
-  height: 42px
-  display: flex
-  flex-direction: row
   box-sizing: border-box
-  align-items: center
-  span
+  height: 42px
+  text-align: left
+
+  .columnTitle
     @extend .text_medium
+    box-sizing: border-box
     color: $color-light
+    font-weight: 400
+    padding: 0
+    padding-left: 12px
+
+  .level
+    @extend .columnTitle
+    width: 110px
+
+  .rowName
+    @extend .columnTitle
+    width: 757px
+
+  .salary
+    @extend .columnTitle
+    width: 200px
+
+  .equipmentCosts
+    @extend .columnTitle
+    width: 200px
+
+  .overheads
+    @extend .columnTitle
+    width: 200px
+
+  .estimatedProfit
+    @extend .columnTitle
+    width: 200px
+
+.row
+  @extend .text_medium
+  box-sizing: border-box
+  height: 60px
+  font-weight: 400
+  color: $white
+  border-top: $border-width solid $border-color
+
+.buttons
+  box-sizing: border-box
+  display: flex
+  opacity: 0
+  transition: opacity 0.2s
+  flex-direction: row
+  width: 57px
+  background-color: $border-color
+  padding: 6px 7px
+  border-radius: 6px
+  align-items: center
+
+  &:hover
+    opacity: 1
+
+.createIcon
+  cursor: pointer
+  position: absolute
+  bottom: 18px
+  left: 15px
+
+.deleteIcon
+  cursor: pointer
+  position: relative
+  left: 24px
+  
+.cell
+  position: relative
+  padding: 0 12px 0 12px
+
+.cell_editable
+  padding: 10px
+  border: $border-width solid $border-color
+  border-radius: 6px
+  color: $color-light
+
+  &:focus
+    outline: 0px solid transparent
