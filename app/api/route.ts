@@ -59,7 +59,7 @@ export async function updateRow(dto: UpdateTableRowDTO) {
   );
 
   const data: RecalculatedRows = await res.json();
-  return data;
+  return Response.json(data);
 }
 
 export async function deleteRow(dto: DeleteTableRowDTO) {
@@ -72,5 +72,5 @@ export async function deleteRow(dto: DeleteTableRowDTO) {
 
   const data = await res.json();
 
-  return data;
+  return Response.json(data);
 }
