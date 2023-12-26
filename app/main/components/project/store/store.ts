@@ -1,12 +1,6 @@
 import { create } from 'zustand';
 import { Distance, TableRow } from '../table/table.types';
 import {
-  createRowInEntity,
-  deleteRow,
-  getTreeRows,
-  updateRow,
-} from '@/app/api/route';
-import {
   addRowByParentId,
   removeRowById,
   updateRowById,
@@ -16,6 +10,7 @@ import {
   DeleteTableRowDTO,
   UpdateTableRowDTO,
 } from '@/app/api/dto.type';
+import { getTreeRows, createRowInEntity, updateRow, deleteRow } from '@/app/api/api';
 
 interface IconRef {
   id: number | null;
