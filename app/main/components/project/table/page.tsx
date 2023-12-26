@@ -1,7 +1,20 @@
+'use client';
+import { useEffect } from 'react';
 import styles from './table.module.sass';
 import TableRow from './tableRow';
+import { useTableStore } from '../store/store';
+import { v4 as uuidv4 } from 'uuid';
+import { emptyTableRow } from './table.service';
 
 const ProjectTable: React.FC = () => {
+  const treeRows = useTableStore((state) => state.treeRows);
+  const setRows = useTableStore((state) => state.setRows);
+  const isLoading = useTableStore((state) => state.isLoading);
+
+  useEffect(() => {
+    setRows();
+  }, []);
+
   return (
     <div className={styles.table}>
       <table className={styles.borderCollapse}>
@@ -28,18 +41,24 @@ const ProjectTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          <TableRow
-            equipmentCosts={0}
-            estimatedProfit={0}
-            machineOperatorSalary={0}
-            mainCosts={0}
-            materials={0}
-            mimExploitation={0}
-            overheads={0}
-            rowName={'Южная строительная площадка'}
-            salary={0}
-            supportCosts={0}
-          />
+          {treeRows.length === 0 && !isLoading ? (
+            <TableRow
+              tableRowData={emptyTableRow}
+              nestingLevel={0}
+              parentId={null}
+            />
+          ) : (
+            treeRows.map((tableRow) => {
+              return (
+                <TableRow
+                  key={uuidv4()}
+                  tableRowData={tableRow}
+                  nestingLevel={0}
+                  parentId={null}
+                />
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>

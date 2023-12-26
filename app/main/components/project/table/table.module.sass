@@ -20,6 +20,7 @@
     @extend .text_medium
     box-sizing: border-box
     color: $color-light
+    letter-spacing: 0.1px
     font-weight: 400
     padding: 0
     padding-left: 12px
@@ -53,35 +54,72 @@
   box-sizing: border-box
   height: 60px
   font-weight: 400
+  letter-spacing: 0.1px
   color: $white
   border-top: $border-width solid $border-color
 
+.buttonsContainer
+  position: relative
+  display: inline-block
+
+  &:hover
+    .buttons
+      opacity: 1
+
+    .createIcon_absolute
+      opacity: 0
+
 .buttons
+  position: relative
+  z-index: 2
   box-sizing: border-box
   display: flex
+  column-gap: 5px
   opacity: 0
   transition: opacity 0.2s
   flex-direction: row
-  width: 57px
+  width: 55px
+  height: 28px
   background-color: $border-color
-  padding: 6px 7px
+  padding-left: 2px
   border-radius: 6px
   align-items: center
 
-  &:hover
-    opacity: 1
-
 .createIcon
+  z-index: 2
+  position: relative
   cursor: pointer
+
+.createIcon_absolute
+  @extend .createIcon
   position: absolute
-  bottom: 18px
-  left: 15px
+  top: 2px
+  left: 2px
+  transition: opacity 0.2s
 
 .deleteIcon
   cursor: pointer
   position: relative
-  left: 24px
-  
+
+.linkContainer
+  position: absolute
+  left: 13px
+  top: 21px
+
+.line1
+  position: relative
+  width: $link-width
+  height: 53px
+  background-color: $link-color
+
+.line2
+  position: absolute
+  width: 15px
+  height: $link-width
+  background-color: $link-color
+  top: 53px
+  left: 0
+
 .cell
   position: relative
   padding: 0 12px 0 12px
