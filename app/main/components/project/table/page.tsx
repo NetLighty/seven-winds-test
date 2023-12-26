@@ -11,9 +11,21 @@ const ProjectTable: React.FC = () => {
   const setRows = useTableStore((state) => state.setRows);
   const isLoading = useTableStore((state) => state.isLoading);
 
+  const iconRefs: Record<
+    number,
+    React.MutableRefObject<HTMLImageElement | null>
+  > = {};
+
   useEffect(() => {
     setRows();
   }, []);
+
+  const handleRef = (
+    id: number,
+    ref: React.MutableRefObject<HTMLImageElement | null>
+  ) => {
+    iconRefs[id] = ref;
+  };
 
   return (
     <div className={styles.table}>
@@ -46,6 +58,7 @@ const ProjectTable: React.FC = () => {
               tableRowData={emptyTableRow}
               nestingLevel={0}
               parentId={null}
+              parentIconRef={null}
             />
           ) : (
             treeRows.map((tableRow) => {
@@ -55,6 +68,7 @@ const ProjectTable: React.FC = () => {
                   tableRowData={tableRow}
                   nestingLevel={0}
                   parentId={null}
+                  parentIconRef={null}
                 />
               );
             })

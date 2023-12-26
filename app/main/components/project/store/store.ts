@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { TableRow } from '../table/table.types';
+import { Distance, TableRow } from '../table/table.types';
 import {
   createRowInEntity,
   deleteRow,
@@ -8,7 +8,6 @@ import {
 } from '@/app/api/route';
 import {
   addRowByParentId,
-  emptyTableRow,
   removeRowById,
   updateRowById,
 } from '../table/table.service';
@@ -18,6 +17,16 @@ import {
   UpdateTableRowDTO,
 } from '@/app/api/dto.type';
 
+interface IconRef {
+  id: number | null;
+  ref: React.MutableRefObject<HTMLImageElement | null>;
+}
+
+interface IconDistances {
+  id: number | null;
+  distances: Distance[];
+}
+
 interface TableState {
   treeRows: TableRow[];
   isLoading: boolean;
@@ -25,11 +34,12 @@ interface TableState {
   deleteRow: (deleteDTO: DeleteTableRowDTO) => void;
   createRow: (createDTO: CreateTableRowDTO) => void;
   updateRow: (updateDTO: UpdateTableRowDTO, tableRow: TableRow) => void;
-  addEmptyRow: (parentId: number) => void;
 }
 
 export const useTableStore = create<TableState>()((set) => ({
   treeRows: [],
+  iconRefs: [],
+  iconDistances: [],
   isLoading: true,
   setRows: async () => {
     try {
@@ -37,7 +47,7 @@ export const useTableStore = create<TableState>()((set) => ({
       set({ treeRows: response });
       set({ isLoading: false });
     } catch (error) {
-      console.error('Error getTreeRows', error);
+      console.error('Error getTreeRows: ', error);
     }
   },
   createRow: async (createDTO) => {
@@ -50,7 +60,7 @@ export const useTableStore = create<TableState>()((set) => ({
         }),
       }));
     } catch (error) {
-      console.error('Error getTreeRows', error);
+      console.error('Error createRowInEntity: ', error);
     }
   },
   updateRow: async (updateDTO, tableRow) => {
@@ -63,13 +73,8 @@ export const useTableStore = create<TableState>()((set) => ({
         }),
       }));
     } catch (error) {
-      console.error('Error getTreeRows', error);
+      console.error('Error updateRow: ', error);
     }
-  },
-  addEmptyRow: (parentId) => {
-    set((state) => ({
-      treeRows: addRowByParentId(state.treeRows, parentId, emptyTableRow),
-    }));
   },
   deleteRow: async (deleteDTO) => {
     try {
@@ -78,7 +83,7 @@ export const useTableStore = create<TableState>()((set) => ({
       }));
       const response = await deleteRow(deleteDTO);
     } catch (error) {
-      console.error('Error getTreeRows', error);
+      console.error('Error deleteRow: ', error);
     }
   },
 }));

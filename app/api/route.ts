@@ -8,7 +8,6 @@ import {
 
 export const API_URL = 'http://185.244.172.108:8081';
 const eID = 115147;
-const rowName = '4b77d057-0c55-4044-9a1e-81015cddfd38';
 
 export async function createEntity() {
   const res = await fetch(API_URL + '/v1/outlay-rows/entity/create', {
@@ -60,7 +59,6 @@ export async function updateRow(dto: UpdateTableRowDTO) {
   );
 
   const data: RecalculatedRows = await res.json();
-
   return data;
 }
 
@@ -74,5 +72,5 @@ export async function deleteRow(dto: DeleteTableRowDTO) {
 
   const data = await res.json();
 
-  return Response.json(data);
+  return data;
 }

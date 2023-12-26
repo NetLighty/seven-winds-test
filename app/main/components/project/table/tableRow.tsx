@@ -3,32 +3,34 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './table.module.sass';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
-import { TableRow } from './table.types';
+import { Distance, TableRow } from './table.types';
 import { emptyTableRow, extractNumbersFromString } from './table.service';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { useTableStore } from '../store/store';
+import LinkLine from './linkLine';
 
 type TableRowProps = {
   tableRowData: TableRow;
   nestingLevel: number;
   parentId: number | null;
+  parentIconRef: React.MutableRefObject<HTMLImageElement | null> | null;
 };
 
 const TableRow: React.FC<TableRowProps> = ({
   tableRowData,
   nestingLevel,
   parentId,
+  parentIconRef,
 }) => {
   const [isEdit, setIsEdit] = useState<boolean>(tableRowData.isEdit || false);
   const [tableRow, setTableRow] = useState<TableRow>(tableRowData);
+  const [iconsDistance, setIconsDistance] = useState<Distance>();
 
   const removeRow = useTableStore((state) => state.deleteRow);
   const createRow = useTableStore((state) => state.createRow);
   const updateRow = useTableStore((state) => state.updateRow);
-  const addEmptyRow = useTableStore((state) => state.addEmptyRow);
 
-  const elementRef1 = useRef<HTMLImageElement>(null);
-  const elementRef2 = useRef<HTMLImageElement>(null);
+  const iconRef = useRef<HTMLImageElement | null>(null);
 
   const setIsEditTrue = () => {
     setIsEdit(true);
@@ -69,7 +71,6 @@ const TableRow: React.FC<TableRowProps> = ({
       ...tableRow,
       child: [...tableRow.child, emptyTableRow],
     }));
-    //addEmptyRow(tableRow.id!);
   };
 
   const onRowNameChange = (e: ContentEditableEvent) => {
@@ -103,13 +104,27 @@ const TableRow: React.FC<TableRowProps> = ({
     setTableRow((tableRow) => ({ ...tableRow, equipmentCosts }));
   };
 
-  useEffect(() => {
-    if (elementRef1.current && elementRef2.current) {
-      const rect1 = elementRef1.current.getBoundingClientRect();
-      const rect2 = elementRef2.current.getBoundingClientRect();
+  const calculateDistance = (
+    childRef: React.MutableRefObject<HTMLImageElement | null> | null,
+    parentRef: React.MutableRefObject<HTMLImageElement | null> | null
+  ) => {
+    if (!childRef?.current || !parentRef?.current) {
+      return { deltaX: 0, deltaY: 0 };
+    }
 
-      const xOffset = rect2.left - rect1.left;
-      const yOffset = rect2.top - rect1.top;
+    const rect1 = childRef.current.getBoundingClientRect();
+    const rect2 = parentRef.current.getBoundingClientRect();
+
+    const deltaX = rect2.left - rect1.left;
+    const deltaY = rect2.top - rect1.top;
+
+    return { deltaX, deltaY };
+  };
+
+  useEffect(() => {
+    if (parentIconRef?.current && iconRef.current) {
+      const distance: Distance = calculateDistance(parentIconRef, iconRef);
+      setIconsDistance(distance);
     }
   }, []);
 
@@ -126,6 +141,7 @@ const TableRow: React.FC<TableRowProps> = ({
         >
           <div className={styles.buttonsContainer}>
             <Image
+              ref={iconRef}
               style={isEdit ? { opacity: '1' } : undefined}
               className={styles.createIcon_absolute}
               src="/doc.svg"
@@ -133,30 +149,7 @@ const TableRow: React.FC<TableRowProps> = ({
               height={24}
               alt="add-icon"
             />
-            {tableRowData.child.map((childData, index) => {
-              return (
-                <div
-                  key={uuidv4()}
-                  style={{
-                    top: `${21}px`,
-                  }}
-                  className={styles.linkContainer}
-                >
-                  <div
-                    style={
-                      index > 0
-                        ? {
-                            height: `${60}px`,
-                            bottom: `${7}px`,
-                          }
-                        : undefined
-                    }
-                    className={styles.line1}
-                  ></div>
-                  <div className={styles.line2}></div>
-                </div>
-              );
-            })}
+            {iconsDistance && <LinkLine iconsDistance={iconsDistance} />}
             <div
               style={
                 isEdit ? { pointerEvents: 'none', opacity: '0' } : undefined
@@ -166,7 +159,6 @@ const TableRow: React.FC<TableRowProps> = ({
               <Image
                 onDoubleClick={(e) => e.stopPropagation()}
                 onClick={addTableRow}
-                ref={elementRef1}
                 className={styles.createIcon}
                 src="/doc.svg"
                 width={24}
@@ -175,7 +167,6 @@ const TableRow: React.FC<TableRowProps> = ({
               />
               <Image
                 onClick={deleteTableRow}
-                ref={elementRef2}
                 className={styles.deleteIcon}
                 src="/trash.svg"
                 width={18}
@@ -226,7 +217,7 @@ const TableRow: React.FC<TableRowProps> = ({
           />
         </td>
       </tr>
-      {tableRow.child.length > 0 && nestingLevel < 5 && (
+      {tableRow.child.length > 0 && (
         <>
           {tableRow.child.map((childData) => {
             return (
@@ -235,6 +226,7 @@ const TableRow: React.FC<TableRowProps> = ({
                 tableRowData={childData}
                 nestingLevel={nestingLevel + 1}
                 parentId={tableRow.id}
+                parentIconRef={iconRef}
               />
             );
           })}

@@ -13,3 +13,8 @@ export type TableRow = {
   supportCosts: 0;
   isEdit?: boolean;
 };
+
+export type Distance = {
+  deltaX: number;
+  deltaY: number;
+};
